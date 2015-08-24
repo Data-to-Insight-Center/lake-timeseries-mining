@@ -63,6 +63,8 @@ minDist.r: measure the distance of two SAX strings
 
 matrixDist.r: measure the distance of two TSB matrices
 
+cdmDist.r: measure the distance of two SAX strings based on Compression-Based Dissimilarity Measure (CDM)
+
 ###############################################
 Knowledge discovery within a single time series
 ###############################################
