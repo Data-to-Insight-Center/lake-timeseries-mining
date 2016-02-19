@@ -49,15 +49,18 @@ hclusteringTSB <- function(tsData, windowSize, overlapping = FALSE, wordSize,
   
   # since the distance matrix is symmetric, only need to access the lower part
   for (i in 2 : numTimeseries) {
+    
+    timeseriesX = tsData[i, ]
+    
+    # transform time series to TSB
+    tsbX = timeseries2TSB(timeseriesX, windowSize, overlapping, wordSize, 
+                          alphabetSize, level)
+    
     for (j in 1 : (i - 1)) {
       
-      timeseriesX = tsData[i, ]
+      
       timeseriesY = tsData[j, ]
-      
-      # transform time series to TSB
-      tsbX = timeseries2TSB(timeseriesX, windowSize, overlapping, wordSize, 
-                            alphabetSize, level)
-      
+        
       tsbY = timeseries2TSB(timeseriesY, windowSize, overlapping, wordSize, 
                             alphabetSize, level)
       

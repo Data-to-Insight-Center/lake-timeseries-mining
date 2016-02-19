@@ -44,13 +44,15 @@ hclusteringSAX <- function(tsData, wordSize, alphabetSize, aggloMethod) {
   
   # since the distance matrix is symmetric, only need to access the lower part
   for (i in 2 : numTimeseries) {
+    
+    timeseriesX = tsData[i, ]
+    # whole time series transformed to a SAX string of length 'wordSize'
+    saxX = (timeseries2Symbol(timeseriesX, wordSize, alphabetSize))$num_rep
+    
     for (j in 1 : (i - 1)) {
-      
-      timeseriesX = tsData[i, ]
+         
       timeseriesY = tsData[j, ]
       
-      # whole time series transformed to a SAX string of length 'wordSize'
-      saxX = (timeseries2Symbol(timeseriesX, wordSize, alphabetSize))$num_rep
       saxY = (timeseries2Symbol(timeseriesY, wordSize, alphabetSize))$num_rep
       
       distMatrix[i, j] = minDist(saxX, saxY, alphabetSize, compressionRatio)
