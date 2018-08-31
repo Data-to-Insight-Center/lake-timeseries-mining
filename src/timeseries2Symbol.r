@@ -42,44 +42,59 @@ timeseries2Symbol <- function(data, n, alphabet_size) {
     stop('Currently alphabet_size cannot be larger than 20. Please update the breakpoint table if you wish to do so')
   }
   
-  # length of the time series
-  N = length(data)
-  
-  # win_size is the number of data points on the raw time series that will be
-  # mapped to a single symbol
-  win_size = floor(N/n)                         
-      
-  # Z normalize it, as it is meaningless to compare ts with different offsets and amplitudes
-  data = (data - mean(data)) / sd(data) 
+  if (sd(data, na.rm = TRUE) != 0 && !is.na(sd(data, na.rm = TRUE))){
+    # if std != 0, and if entire timeseries != na (check at lease some data exist in this input)
     
-  if (N <= n){
-    # take care of the special case where there is no dimensionality reduction needed
-    PAA = data
-  }
-  else {
-    # Convert to PAA.
-      
-    # N is not dividable by n
-    if ((N %% n) != 0) {                               
-      temp = matrix(0, nrow = n, ncol = N)
-      
-      for (i in 1 : n){
-        temp[i, ] = data
-      }
-      
-    expanded_data = matrix(temp, 1, N * n)
-      
-    PAA = colMeans(matrix(expanded_data, N, n), na.rm = TRUE)
-        
-    } else {
-      # N is dividable by n
-      PAA = colMeans(matrix(data, win_size, n), na.rm = TRUE)
+    # length of the time series
+    N = length(data)
+    
+    # win_size is the number of data points on the raw time series that will be
+    # mapped to a single symbol
+    win_size = floor(N/n)                         
+    
+    # Z normalize it, as it is meaningless to compare ts with different offsets and amplitudes
+    data = (data - mean(data, na.rm = TRUE)) / sd(data, na.rm = TRUE) 
+    
+    if (N <= n){
+      # take care of the special case where there is no dimensionality reduction needed
+      PAA = data
     }
+    else {
+      # Convert to PAA.
+      
+      # N is not dividable by n
+      if ((N %% n) != 0) {                               
+        temp = matrix(0, nrow = n, ncol = N)
+        
+        for (i in 1 : n){
+          temp[i, ] = data
+        }
+        
+        expanded_data = matrix(temp, 1, N * n)
+        
+        PAA = colMeans(matrix(expanded_data, N, n), na.rm = TRUE)
+        
+      } else {
+        # N is dividable by n
+        PAA = colMeans(matrix(data, win_size, n), na.rm = TRUE)
+      }
+    }
+    
+    # Convert the PAA to SAX representation
+    sax_rep = paa2SAX(PAA, alphabet_size)        
+    
+  } else {
+    
+    # assign all "a" word when entire data was faulty
+    str_rep = "a"
+    itr = n-1
+    for (i in 1 : itr){
+      str_rep = paste(str_rep,"a",sep='')
+    }
+    sax_rep = list(num_rep = array(0,n), str_rep = str_rep)
+    
   }
   
-  # Convert the PAA to SAX representation
-  sax_rep = paa2SAX(PAA, alphabet_size)        
-    
   return(sax_rep)                                         
 }       
 
@@ -160,5 +175,5 @@ num2Letter <- function(num) {
           "25" = "y",
           "26" = "z"
   )
-          
+  
 }
