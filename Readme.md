@@ -15,9 +15,7 @@ Overview:
 We discribe the scripts based on their functionality as group and briefly introduce each script. You can find detailed comments
 in each script which can help you understand the script easily.
 
-##########################
-Preprocessing
-##########################
+### Preprocessing
 
 a) time series alignment:
 Since time series may have different time resolution and timestamps when being compared, we need to align time series first.
@@ -39,9 +37,7 @@ string, instead, we slicing it into multiple subsequences each of which is in tu
 
 timeseries2Subseqs.r: transform a raw time series into subsequences with an overlapped or non-overlapped sliding window.
 
-######################################
-Time series to symbolic representation
-######################################
+### Time series to symbolic representation
 
 a) SAX representation
 
@@ -58,9 +54,7 @@ timeseries2TSB.r: transform a time series into a TSB.
 
 tsb2Img.r: visualize a TSB matrix as an image, like heatmap.
 
-######################################
-Distance measure
-######################################
+### Distance measure
 
 minDist.r: measure the distance of two SAX strings
 
@@ -68,9 +62,7 @@ matrixDist.r: measure the distance of two TSB matrices
 
 cdmDist.r: measure the distance of two SAX strings based on Compression-Based Dissimilarity Measure (CDM)
 
-###############################################
-Knowledge discovery within a single time series
-###############################################
+### Knowledge discovery within a single time series
 
 a) find motifs:
 
@@ -85,9 +77,7 @@ anomalyDetectionCDM.r: detect anomaly based on SAX representation and on Compres
 anmolyDetectionWCAD.r: detect anomaly based on SAX representation and CDM. Compared to 'anomalyDetectionCDM.r', this 
 approach utilizes multiple windows.
 
-################################################
-Knowledge discovery amongst multiple time series
-################################################
+### Knowledge discovery amongst multiple time series
 
 a) clustering
 
